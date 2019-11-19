@@ -9,17 +9,21 @@ def get_link_files(folder_path):
     return folder
 
 
+def remove_file(file_path):
+    if os.path.isfile(file_path):
+        os.remove(file_path)
+        print('File: ', file_path, ' was removed')
+    else:
+        print('Error: %s file not found: ', file_path)
+
+
 def optimize_memory(folder):
     file_list_original = []
     for address, dirs, files in folder:
         for file in files:
             if file in file_list_original:
                 file_path_remove = address+'/'+file
-                if os.path.isfile(file_path_remove):
-                    os.remove(file_path_remove)
-                    print('File: ', file_path_remove, ' was removed')
-                else:
-                    print('Error: %s file not found: ', file_path_remove)
+                remove_file(file_path_remove)
             else:
                 file_list_original.append(file)
 
