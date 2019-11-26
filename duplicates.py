@@ -18,13 +18,13 @@ def show_path_files(files_path):
 
 def get_duplicate_files(folder):
     duplicate_files = []
-    d = defaultdict(int)
+    files_count = defaultdict(int)
     for address, dirs, files_path in folder:
         for file_name_path in files_path:
-            if d[file_name_path] > 0:
+            if files_count[file_name_path] > 0:
                 file_path_duplicate = os.path.join(address, file_name_path)
                 duplicate_files.append(file_path_duplicate)
-            d[file_name_path] += 1
+            files_count[file_name_path] += 1
     return duplicate_files
 
 
