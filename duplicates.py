@@ -16,15 +16,15 @@ def show_path_files(files_path):
             print('Patch to duplicate file: ' + file_path)
 
 
-def get_duplicate_files(folder):
+def get_duplicate_files(path_list):
     duplicate_files = []
-    files_count = defaultdict(int)
-    for address, dirs, files_path in folder:
+    files_location = defaultdict(list)
+    for address, dirs, files_path in path_list:
         for file_name_path in files_path:
-            if files_count[file_name_path] > 0:
-                file_path_duplicate = os.path.join(address, file_name_path)
-                duplicate_files.append(file_path_duplicate)
-            files_count[file_name_path] += 1
+            if file_name_path in files_location:
+                duplicate_files.append(address + '/' + file_name_path)
+            else:
+                files_location[file_name_path] = address + '/' + file_name_path
     return duplicate_files
 
 
