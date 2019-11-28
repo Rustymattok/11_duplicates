@@ -10,22 +10,19 @@ def get_path_list(folder_path):
     return path_list
 
 
-def show_path_files(files_path):
-    for file_path in files_path:
-        if os.path.isfile(file_path):
-            print('Patch to duplicate file: ' + file_path)
+def show_path_files(files_location):
+    for (file_name, files_path) in files_location.items():
+        if len(files_path) > 1:
+            for file_path in files_path:
+                print('Patch to duplicate file: ', file_path)
 
 
-def get_duplicate_files(path_list):
-    duplicate_files = []
+def get_files_location(path_list):
     files_location = defaultdict(list)
     for address, dirs, files_path in path_list:
-        for file_name_path in files_path:
-            if file_name_path in files_location:
-                duplicate_files.append(address + '/' + file_name_path)
-            else:
-                files_location[file_name_path] = address + '/' + file_name_path
-    return duplicate_files
+        for file_name in files_path:
+            files_location[file_name].append(os.path.join(address, file_name))
+    return files_location
 
 
 def create_parser():
@@ -44,8 +41,8 @@ def main():
     args = parser.parse_args()
     folder_path = args.directory
     if os.path.isdir(folder_path):
-        duplicate_files = get_duplicate_files(get_path_list(folder_path))
-        show_path_files(duplicate_files)
+        files_location = get_files_location(get_path_list(folder_path))
+        show_path_files(files_location)
     else:
         print('not correct directory or not exist')
 
